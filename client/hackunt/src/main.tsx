@@ -9,8 +9,8 @@ const CLIENTID = import.meta.env.CLIENTID
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Auth0Provider
-      domain={DOMAIN}
-      clientId={CLIENTID}
+      domain="dev-jel7yj2ufa56jbkj.us.auth0.com"
+      clientId='7uBuee695VtCob7p9PxNYGiz1RiTOv7w'
       authorizationParams={{
         redirect_uri: window.location.origin
       }}
