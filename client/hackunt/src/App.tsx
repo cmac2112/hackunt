@@ -1,14 +1,11 @@
-import { useState } from 'react'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Landing from './components/Landing'
-import Register from './components/Login/register'
-import Login from './components/Login/Login'
+import Register from './components/Login/Register'
+import Login from './components/Login/LogIn'
 import Home from './components/Home'
 import './App.css'
 
 function App() {
-  
-
   return (
     <Router>
       <Routes>
