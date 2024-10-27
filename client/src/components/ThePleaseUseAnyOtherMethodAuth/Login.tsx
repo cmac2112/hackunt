@@ -21,7 +21,7 @@ const Login = () => {
 
       if (response.status === 200) {
         login(name);
-        navigate("/home");
+        navigate("/hackunt/home");
       }
     } catch (err) {
       setError("login failed");

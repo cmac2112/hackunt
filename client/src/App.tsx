@@ -14,12 +14,12 @@ function App() {
     <LoginProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/test" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/hackunt/" element={<Landing />} />
+          <Route path="/hackunt/test" element={<Home />} />
+          <Route path="/hackunt/login" element={<Login />} />
+          <Route path="/hackunt/register" element={<Register />} />
+          <Route path="/hackunt/home" element={<Home />} />
+          <Route path="/hackunt/about-us" element={<AboutUs />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </Router>

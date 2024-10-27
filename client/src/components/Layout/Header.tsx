@@ -7,12 +7,12 @@ const Header = () => {
        
       <nav className="mt-2 flex justify-between items-center">
         <div className="flex items-center space-x-8">
-          <Link to="/" className="hover:text-gray-400 text-xl">Home</Link>
-          <Link to="/about-us" className="hover:text-gray-400 text-xl">About Us</Link>
+          <Link to="/hackunt/" className="hover:text-gray-400 text-xl">Home</Link>
+          <Link to="/hackunt/about-us" className="hover:text-gray-400 text-xl">About Us</Link>
         </div>
         <div className="flex items-center space-x-8">
-          <Link to="/register" className="hover:text-gray-400">Sign Up</Link>
-          <Link to="/login" className="hover:text-gray-400">Sign In</Link>
+          <Link to="/hackunt/register" className="hover:text-gray-400">Sign Up</Link>
+          <Link to="/hackunt/login" className="hover:text-gray-400">Sign In</Link>
         </div>
       </nav>
     </header>

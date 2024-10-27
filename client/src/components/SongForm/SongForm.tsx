@@ -35,7 +35,7 @@ const SongForm: React.FC<SongFormProps> = ({ onClose, onSongAdded }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-gray-800 p-4 z-50">
+    <div className="fixed top-0 left-0 w- bg-gray-800 p-4 z-50">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
           type="text"
@@ -69,10 +69,9 @@ const SongForm: React.FC<SongFormProps> = ({ onClose, onSongAdded }) => {
           Add Song
         </button>
         {error && <p className="text-red-500">{error}</p>}
+        <button onClick={onClose} className="bg-red-500 p-2 rounded">Cancel</button>
       </form>
-      <button onClick={onClose} className="absolute top-2 right-2">
-        Close
-      </button>
+      
     </div>
   );
 };

@@ -27,7 +27,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
-          <Link to="/login" className="p-4 bg-blue-500 text-white rounded-full">
+          <Link to="/hackunt/login" className="p-4 bg-blue-500 text-white rounded-full">
             Login
           </Link>
         </div>
@@ -38,7 +38,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
-          <Link to="/login" className="p-4 bg-blue-500 text-white rounded-full">
+          <Link to="/hackunt/login" className="p-4 bg-blue-500 text-white rounded-full">
             We do not support mobile quite yet
           </Link>
         </div>

@@ -26,8 +26,8 @@ const Register = () => {
       });
 
       if (response.status === 200) {
-        login(name); // Assuming login function sets the logged-in state
-        navigate("/home");
+        login(name);
+        navigate("/hackunt/home");
       }
     } catch (err) {
       setError("Registration failed");
