@@ -7,8 +7,7 @@ const DOMAIN = import.meta.env.DOMAIN
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Auth0Provider
-    domain={DOMAIN}
+    
     <App />
   </StrictMode>,
 )
