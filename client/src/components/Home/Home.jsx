@@ -2,12 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import Layout from "../Layout/Layout";
 import * as d3 from "d3";
 import { useLogin } from "../../context/LoginContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SongForm from "../SongForm/SongForm";
 import axios from "axios";
 const Home = () => {
-  const { isLoggedIn, login, username } = useLogin();
-  const navigate = useNavigate();
+  const { isLoggedIn, username } = useLogin();
   console.log(username);
   const [showForm, setShowForm] = useState(false);
   const tooltipRef = useRef(null);
@@ -30,6 +29,17 @@ const Home = () => {
         <div className="flex items-center justify-center min-h-screen">
           <Link to="/login" className="p-4 bg-blue-500 text-white rounded-full">
             Login
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
+  if (isMobile()) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Link to="/login" className="p-4 bg-blue-500 text-white rounded-full">
+            We do not support mobile quite yet
           </Link>
         </div>
       </Layout>

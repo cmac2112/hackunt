@@ -9,7 +9,6 @@ COPY /package*.json ./
 
 # Install dependencies
 RUN npm install
-RUN npm rebuild bcrypt
 
 # Copy the rest of the application code from the server directory
 COPY . .
@@ -18,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the application
-CMD ["node", "index.js"]
+CMD ["sh", "-c", "npm install && nsode index.js"]
