@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../Layout/Layout';
 import { Link } from 'react-router-dom'
 import { useLogin } from '../../context/LoginContext';
@@ -8,6 +8,14 @@ const Landing = () => {
   const { login, isLoggedIn } = useLogin();
   console.log('is logged in?', login);
   console.log('is logged in?', isLoggedIn);
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
+  useEffect(()=>{
+    if(isMobile()){
+      alert('We are not yet prepared for mobile traffic, please visit us on the web')
+    }
+  })
   return (
     <Layout>
       <div className="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-center p-4">

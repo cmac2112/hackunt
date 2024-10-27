@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 //could reuse this component for register, meh
 const Login = () => {
   const { login } = useLogin()
-  const [name, setName] = useState("")
-  const [password, setPassword] = useState("")
+  const [name, setName] = useState("user1")
+  const [password, setPassword] = useState("password1")
   const [error, setError] = useState("")
   const navigate = useNavigate()
   const handleLogin = async (e: React.FormEvent) => {
@@ -20,7 +20,7 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        login();
+        login(name);
         navigate("/home");
       }
     } catch (err) {

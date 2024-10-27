@@ -53,18 +53,21 @@ function connectWithRetry() {
 }
 connectWithRetry();
 const port = 3000;
-app.get('/hello', (req, res) => {
-  res.send('Hello World');
-});
 
+const genresList = ['rock', 'pop', 'jazz', 'hip-hop', 'classical', 'country', 'electronic', 'reggae', 'blues', 'metal'];
+const defaultSongs = [
+  { title: 'Default Song 1', artist: 'Default Artist 1', genre: 'rock', link: 'https://www.youtube.com/' },
+  { title: 'Default Song 2', artist: 'Default Artist 2', genre: 'pop', link: 'https://www.youtube.com/' },
+  { title: 'Default Song 3', artist: 'Default Artist 3', genre: 'jazz', link: 'https://www.youtube.com/' }
+];
 //add security, screw auth0
 //sad times call for sad measures, if there is time implement jwt
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 8);
 
-  const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-  con.query(query, [username, hashedPassword], (err, result) => {
+  const query = 'INSERT INTO users (username, password, genres, songs) VALUES (?, ?, ?, ?)';
+  con.query(query, [username, hashedPassword, JSON.stringify(genresList), JSON.stringify(defaultSongs)], (err, result) => {
     if (err) {
       res.status(500).send('Error registering user');
       throw err;
@@ -96,6 +99,56 @@ app.post('/login', (req, res) => {
     }
 
     res.status(200).send('Login successful');
+  });
+});
+
+app.get('/api/songs/:username', (req, res) => {
+  const { username } = req.params;
+
+  const query = 'SELECT songs FROM users WHERE username = ?';
+  con.query(query, [username], (err, results) => {
+    if (err) {
+      res.status(500).send('Error fetching songs');
+      throw err;
+    }
+    if (results.length === 0) {
+      return res.status(404).send('User not found');
+    }
+    const userSongs = JSON.parse(results[0].songs);
+    res.status(200).json(userSongs);
+  });
+});
+app.get('/api/genres/:username', (req, res) => {
+  const { username } = req.params;
+
+  const query = 'SELECT genres FROM users WHERE username = ?';
+  con.query(query, [username], (err, results) => {
+    if (err) {
+      res.status(500).send('Error fetching songs');
+      throw err;
+    }
+    if (results.length === 0) {
+      return res.status(404).send('User not found');
+    }
+    const userSongs = JSON.parse(results[0].genres);
+    res.status(200).json(userSongs);
+  });
+});
+app.post(`/api/songs/:username`, (req, res) => {
+  const { username } = req.params;
+  const { title, artist, genre, link } = req.body;
+
+  if (!title || !artist || !genre || !link) {
+    return res.status(400).send('All fields are required');
+  }
+
+  const query = 'UPDATE users SET songs = JSON_ARRAY_APPEND(songs, "$", JSON_OBJECT("title", ?, "artist", ?, "genre", ?, "link", ?)) WHERE username = ?';
+  con.query(query, [title, artist, genre, link, username], (err, result) => {
+    if (err) {
+      res.status(500).send('Error adding song');
+      throw err;
+    }
+    res.status(200).send('Song added successfully');
   });
 });
 

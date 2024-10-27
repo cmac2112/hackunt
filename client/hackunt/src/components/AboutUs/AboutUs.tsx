@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import Layout from '../Layout/Layout';
 import './AboutUs.css'; // Import the CSS file for custom animations
 

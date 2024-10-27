@@ -26,7 +26,7 @@ const Register = () => {
       });
 
       if (response.status === 200) {
-        login(); // Assuming login function sets the logged-in state
+        login(name); // Assuming login function sets the logged-in state
         navigate("/home");
       }
     } catch (err) {
