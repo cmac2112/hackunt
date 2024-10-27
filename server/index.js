@@ -1,82 +1,79 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const cors = require('cors');
 const dotenv = require('dotenv');
-
 dotenv.config();
-const { ObjectId } = require('mongodb'); // Ensure ObjectId is imported
 
 const app = express();
+app.use(bodyParser.json());
+app.use(cors());
+
 const port = process.env.PORT || 3000;
 
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-async function connectToDatabase() {
+// Define a User schema
+const userSchema = new mongoose.Schema({
+  sub: { type: String, unique: true, required: true },
+  user: { type: String, required: true },
+  songs: { type: Map, of: Object },
+});
+
+// Create a User model
+const User = mongoose.model('User', userSchema);
+
+// Endpoint to store user
+app.post('/api/store-user', async (req, res) => {
+  const { sub, user } = req.body;
+
+  if (!sub || !user) {
+    return res.status(400).json({ message: 'Invalid user data' });
+  }
+
   try {
-    await client.connect();
-    console.log("Connected to MongoDB Atlas");
+    // Check if the user already exists
+    let existingUser = await User.findOne({ sub });
+    if (!existingUser) {
+      // Create a new user if not exists
+      existingUser = new User({ sub, user, songs: {} });
+      await existingUser.save();
+    }
+    res.status(200).json({ message: 'User stored successfully' });
   } catch (error) {
-    console.error("Error connecting to MongoDB Atlas:", error);
+    res.status(500).json({ message: 'Error storing user', error });
   }
-}
-
-connectToDatabase();
-
-app.use(express.json());
-app.get('/', (req, res) => {
-  res.send('Hello World!');
 });
 
-// Example route to insert a document into a collection
-app.post('/add', async (req, res) => {
-  try {
-    const database = client.db('hackunt');
-    const collection = database.collection('Users');
-    
-    // Assuming req.body contains { _id, songName, songData }
-    const { _id, songName, songData } = req.body;
+// Endpoint to add a song to a user
+app.post('/api/add-song', async (req, res) => {
+  const { sub, songName, songData } = req.body;
 
-    // Validate input
-    if (!_id || !songName || !songData) {
-      res.status(400).send("Invalid input");
-      return;
+  if (!sub || !songName || !songData) {
+    return res.status(400).json({ message: 'Invalid input' });
+  }
+
+  try {
+    // Find the user by sub
+    const user = await User.findOne({ sub });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Add the song to the "songs" field of the document with the given _id
-    const result = await collection.updateOne(
-      { _id: new ObjectId(_id) }, // Find the document by _id
-      { $set: { [`songs.${songName}`]: songData } } // Add the song to songs
-    );
+    // Add the song to the user's songs map
+    user.songs.set(songName, songData);
+    await user.save();
 
-    if (result.matchedCount === 0) {
-      res.status(404).send("Document not found");
-      return;
-    }
-
-    res.status(200).send("Song added successfully");
+    res.status(200).json({ message: 'Song added successfully' });
   } catch (error) {
-    console.error("Error adding song:", error); // Log the error
-    res.status(500).send(error.message); // Send the error message
+    res.status(500).json({ message: 'Error adding song', error });
   }
 });
-
-app.get('/test', async (req, res) =>{
-  try{
-    const database = client.db('hackunt');
-    const collection = database.collection('Users');
-    const result = await collection.find({}).toArray();
-    res.status(200).send(result);
-  }catch(error){
-    res.status(500).send(error);
-  }
-})
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from '../Layout/Layout'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Link } from 'react-router-dom'
 const Landing = () => {
   const { loginWithRedirect, logout } = useAuth0()
   const handleLogin = async () => {
@@ -24,6 +25,7 @@ const Landing = () => {
       <div>Landing</div>
       <button onClick={handleLogin}>Login</button>
       <button onClick={handleLogout}>Logout</button>
+      <Link to="/test">Home</Link>
     </Layout>
     
   )
