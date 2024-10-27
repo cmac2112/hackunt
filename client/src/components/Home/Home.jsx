@@ -119,9 +119,9 @@ const Home = () => {
             d3
               .forceLink(allLinks)
               .id((d) => d.id)
-              .distance(70)
+              .distance(30)
           )
-          .force("charge", d3.forceManyBody().strength(-100))
+          .force("charge", d3.forceManyBody().strength(-250))
           .force("center", d3.forceCenter(width / 2, height / 2));
 
         const link = svg
@@ -137,11 +137,11 @@ const Home = () => {
         const node = svg
           .append("g")
           .attr("stroke", "#fff")
-          .attr("stroke-width", 8)
+          .attr("stroke-width", 1)
           .selectAll("circle")
           .data(allNodes)
           .join("circle")
-          .attr("r", 10)
+          .attr("r",10)
           .attr('fill', d => d.id === 'master' ? '#ff6347' : d.genre ? colorScale(d.genre) : '#ff6347')
           .on("click", (event, d) => {
             if (d.link) {
