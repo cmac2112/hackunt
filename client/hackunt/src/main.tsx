@@ -7,7 +7,6 @@ const DOMAIN = import.meta.env.DOMAIN
 const CLIENTID = import.meta.env.CLIENTID
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
     <Auth0Provider
       domain="dev-jel7yj2ufa56jbkj.us.auth0.com"
       clientId='7uBuee695VtCob7p9PxNYGiz1RiTOv7w'
@@ -17,5 +16,4 @@ createRoot(document.getElementById('root')!).render(
     >
       <App />
     </Auth0Provider>
-  </StrictMode>
 );

@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Landing from './components/Landing'
-import Register from './components/Login/register'
-import Login from './components/Login/Login'
+import Register from './components/Login'
+import Login from './components/Login'
 import Home from './components/Home'
 import './App.css'
+import { LoginProvider } from './context/LoginContext'
 
 function App() {
   
 
   return (
+    <LoginProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -20,6 +22,7 @@ function App() {
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </Router>
+    </LoginProvider>
   )
 }
 

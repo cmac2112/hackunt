@@ -1,78 +1,62 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-dotenv.config();
-
+require("dotenv").config();
+const mysql = require("mysql");
+const express = require("express");
 const app = express();
-app.use(bodyParser.json());
+const cors = require("cors");
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}))
 
-const port = process.env.PORT || 3000;
+const connectionConfig = {
+  host: process.env.DB_HOST || "Cmac24",
+  port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER || DB_USER,
+  password: process.env.DB_PASSWORD || DB_password,
+  database: process.env.DB_DATABASE || "unthack",
+};
+//no data in database right now
+let con;
 
-// Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+function connectWithRetry() {
+  con = mysql.createConnection(connectionConfig);
 
-// Define a User schema
-const userSchema = new mongoose.Schema({
-  sub: { type: String, unique: true, required: true },
-  user: { type: String, required: true },
-  songs: { type: Map, of: Object },
-});
-
-// Create a User model
-const User = mongoose.model('User', userSchema);
-
-// Endpoint to store user
-app.post('/api/store-user', async (req, res) => {
-  const { sub, user } = req.body;
-
-  if (!sub || !user) {
-    return res.status(400).json({ message: 'Invalid user data' });
-  }
-
-  try {
-    // Check if the user already exists
-    let existingUser = await User.findOne({ sub });
-    if (!existingUser) {
-      // Create a new user if not exists
-      existingUser = new User({ sub, user, songs: {} });
-      await existingUser.save();
-    }
-    res.status(200).json({ message: 'User stored successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error storing user', error });
-  }
-});
-
-// Endpoint to add a song to a user
-app.post('/api/add-song', async (req, res) => {
-  const { sub, songName, songData } = req.body;
-
-  if (!sub || !songName || !songData) {
-    return res.status(400).json({ message: 'Invalid input' });
-  }
-
-  try {
-    // Find the user by sub
-    const user = await User.findOne({ sub });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+  con.connect(function (err) {
+    console.log("Connecting to MySQL");
+    if (err) {
+      console.log("error retrying");
+      console.log("error when connecting to db:", err);
+      setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+    } else {
+      console.log("Connected to MySQL");
     }
 
-    // Add the song to the user's songs map
-    user.songs.set(songName, songData);
-    await user.save();
+    con.query("SHOW TABLES", function (err, rows) {
+      if (err) {
+        console.log("error in query");
+        console.log("error in query:", err);
+        setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+      }
+      console.log("Data received from Db:\n");
+      console.log(rows);
+    });
+  });
 
-    res.status(200).json({ message: 'Song added successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding song', error });
-  }
+  con.on("error", function (err) {
+    console.log("db error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      connectWithRetry(); // Reconnect on connection loss
+    } else {
+      throw err;
+    }
+  });
+}
+connectWithRetry();
+//authentication
+const port = 3000;
+app.get('/hello', (req, res) => {
+  res.send('Hello World');
 });
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

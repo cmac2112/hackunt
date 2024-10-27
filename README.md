@@ -16,3 +16,7 @@ schema ex
     }
   }
 }
+https://dev-jel7yj2ufa56jbkj.us.auth0.com/login/callback
+
+
+wow literally nothing worked today, auth0 never wanted to allow us to connect to spotify stuff, the school wifi did not want to let us connect to mongodb atlas, sad times, lots of wasted time.
