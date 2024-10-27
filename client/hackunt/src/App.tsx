@@ -1,4 +1,5 @@
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import { useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Landing from './components/Landing'
 import Register from './components/Login/Register'
 import Login from './components/Login/LogIn'
@@ -10,6 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/test" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home:username" element={<Home />} />
