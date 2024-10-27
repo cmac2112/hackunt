@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import Layout from '../Layout/Layout';
 import { Link } from 'react-router-dom'
 import { useLogin } from '../../context/LoginContext';
-import './Landing.css'; // Import the CSS file for custom animations
+import './Landing.css';
+import spider from "../../assets/spider.svg"
+
 
 const Landing = () => {
   const { login, isLoggedIn } = useLogin();
@@ -19,6 +21,9 @@ const Landing = () => {
   return (
     <Layout>
       <div className="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="bg-gray-200 rounded-full p-5">
+        <img src={spider} className='h-24' />
+        </div>
         <h1 className="text-6xl font-bold">Nocturne</h1>
         <svg className="animate-bounce w-6 h-6 mt-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />

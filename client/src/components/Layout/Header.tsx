@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import spider from '../../assets/spider.svg'
 
 const Header = () => {
 
@@ -10,7 +9,6 @@ const Header = () => {
         <div className="flex items-center space-x-8">
           <Link to="/" className="hover:text-gray-400 text-xl">Home</Link>
           <Link to="/about-us" className="hover:text-gray-400 text-xl">About Us</Link>
-          <img src={spider} className='h-12 w-12'/>
         </div>
         <div className="flex items-center space-x-8">
           <Link to="/register" className="hover:text-gray-400">Sign Up</Link>
