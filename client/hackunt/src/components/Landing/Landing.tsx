@@ -36,7 +36,7 @@ const Landing = () => {
           Nocturne is an innovative web application designed to enhance your music listening experience. By leveraging Spotify's API, the app provides personalized song recommendations, curated playlists, and interactive features that make discovering new music fun and engaging. 
           Whether you're looking to create custom playlists, explore trending tracks, or simply enjoy your favorite tunes, Nocturne offers a seamless and enjoyable user experience. Get started today and dive into a world of music tailored just for you!
         </p>
-        <button className="mt-8 px-6 py-4 bg-blue-950 text-white font-semibold rounded-lg hover:bg-blue-700">
+        <button className="mt-8 px-6 py-4 bg-blue-950 text-white font-semibold rounded-lg hover:bg-blue-700 animate-pulse">
           Get Started
         </button>
         <h2 className="mt-8 text-6xl font-bold">Why use Nocturne?</h2>  
