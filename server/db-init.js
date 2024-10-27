@@ -3,10 +3,13 @@ const mysql = require("mysql");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bcrypt = require("bcrypt")
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}))
 
+
+//sad times call for sad measures, sql it is
 const connectionConfig = {
   host: process.env.DB_HOST || "Cmac24",
   port: process.env.DB_PORT || 3306,
@@ -14,7 +17,6 @@ const connectionConfig = {
   password: process.env.DB_PASSWORD || DB_password,
   database: process.env.DB_DATABASE || "unthack",
 };
-//no data in database right now
 
 const con = mysql.createConnection(connectionConfig);
 
@@ -49,10 +51,13 @@ con.query(`
         
     })
 
+    const hashedPassword1 = bcrypt.hashSync('password1', 8);
+    const hashedPassword2 = bcrypt.hashSync('password2', 8);
+    const hashedPassword3 = bcrypt.hashSync('password3', 8);
     const users = [
         {
           username: 'user1',
-          password: 'password1',
+          password: hashedPassword1,
           songs: JSON.stringify([
             { title: 'Song 1', artist: 'Artist 1', genre: 'rock' },
             { title: 'Song 2', artist: 'Artist 2', genre: 'country' }
@@ -60,7 +65,7 @@ con.query(`
         },
         {
           username: 'user2',
-          password: 'password2',
+          password: hashedPassword2,
           songs: JSON.stringify([
             { title: 'Song 3', artist: 'Artist 3', genre: 'pop' },
             { title: 'Song 4', artist: 'Artist 4', genre: 'country' }
@@ -68,7 +73,7 @@ con.query(`
         },
         {
           username: 'user3',
-          password: 'password3',
+          password: hashedPassword3,
           songs: JSON.stringify([
             { title: 'Song 5', artist: 'Artist 5', genre: 'rock' },
             { title: 'Song 6', artist: 'Artist 6', genre: 'pop' }

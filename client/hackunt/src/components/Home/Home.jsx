@@ -1,66 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../Layout/Layout';
 import * as d3 from 'd3'
-/*
-interface Album {
-  album: {
-    id: string;
-    name: string;
-    images: { url: string }[];
-  };
-}
+import { useLogin} from '../../context/LoginContext';
 
-const client_id = 'd30a8165cd784e98aeaf2be0482b4264'; // Replace with your Spotify client ID
-const redirect_uri = 'http://localhost:3000/callback'; // Replace with your redirect URI
-*/
+
 const Home = () => {
-  const [albums, setAlbums] = useState([]);
-  //const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-/*
-  useEffect(() => {
-    const fetchAlbums = async (token: string) => {
-      try {
-        const response = await fetch('https://api.spotify.com/v1/me/albums', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setAlbums(data.items);
-      } catch (error) {
-        console.error('Error fetching albums:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { isLoggedIn, login } = useLogin();
+  console.log(isLoggedIn)
 
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem('token');
-
-    if (!token && hash) {
-      const parsedHash = new URLSearchParams(hash.substring(1));
-      token = parsedHash.get('access_token');
-      window.location.hash = '';
-      if (token) {
-        window.localStorage.setItem('token', token);
-        setIsAuthenticated(true);
-        fetchAlbums(token);
-      }
-    } else if (token) {
-      setIsAuthenticated(true);
-      fetchAlbums(token);
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLogin = () => {
-    const scope = 'user-library-read';
-    window.location.href = `https://accounts.spotify.com/authorize?response_type=token&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}`;
-  }; */
-
-  
   const [count, setCount] = useState(0)
   const svgRef = useRef(null);
 

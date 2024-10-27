@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bcrypt = require("bcrypt")
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}))
@@ -14,7 +15,7 @@ const connectionConfig = {
   password: process.env.DB_PASSWORD || DB_password,
   database: process.env.DB_DATABASE || "unthack",
 };
-//no data in database right now
+
 let con;
 
 function connectWithRetry() {
@@ -51,12 +52,52 @@ function connectWithRetry() {
   });
 }
 connectWithRetry();
-//authentication
 const port = 3000;
 app.get('/hello', (req, res) => {
   res.send('Hello World');
 });
 
+//add security, screw auth0
+//sad times call for sad measures, if there is time implement jwt
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 8);
+
+  const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+  con.query(query, [username, hashedPassword], (err, result) => {
+    if (err) {
+      res.status(500).send('Error registering user');
+      throw err;
+    }
+    res.status(200).send('User registered successfully');
+  });
+});
+
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const query = 'SELECT * FROM users WHERE username = ?';
+  con.query(query, [username], (err, results) => {
+    if (err) {
+      res.status(500).send('Error logging in');
+      throw err;
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send('User not found');
+    }
+
+    const user = results[0];
+    const passwordIsValid = bcrypt.compareSync(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(401).send('Invalid password');
+    }
+
+    res.status(200).send('Login successful');
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

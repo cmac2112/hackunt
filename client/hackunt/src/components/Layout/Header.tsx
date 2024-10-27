@@ -11,8 +11,8 @@ const Header = () => {
           <Link to="/about-us" className="hover:text-gray-400">About Us</Link>
         </div>
         <div className="flex items-center space-x-8">
-          <Link to="/sign-up" className="hover:text-gray-400">Sign Up</Link>
-          <Link to="/sign-in" className="hover:text-gray-400">Sign In</Link>
+          <Link to="/register" className="hover:text-gray-400">Sign Up</Link>
+          <Link to="/login" className="hover:text-gray-400">Sign In</Link>
         </div>
       </nav>
     </header>
